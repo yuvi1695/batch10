@@ -13,10 +13,66 @@
     yum:
       name: maven
       state: present
-  - name: Install Tomcat
-    yum:
-      name: tomcat9
-      state: present
+  - name: Add Tomcat Group
+    group:
+      name: tomcat
+  - name: Add Tomcat User
+    user:
+      name: tomcat
+      group: tomcat
+      home: /user/share/tomcat
+      createhome: no
+  - name: create /opt/tomcat directory
+    file:
+      path: /opt/tomcat
+      state: directory
+      mode: 0755
+  - name: Download Latest Tomcat and Extract
+    unarchive:
+      src: http://apache.cs.utah.edu/tomcat/tomcat-9/v9.0.16/bin/apache-tomcat-9.0.16.tar.gz
+      dest: /opt/tomcat
+      remote_src: yes
+      extra_opts: [--strip-components=1]
+  - name: Change ownership
+    file:
+      path: /opt/tomcat
+      owner: tomcat
+      group: tomcat
+      mode: "u+rwx,g+rx,o=rx"
+      recurse: yes
+      state: directory
+  - name: Create tomcat.service
+    file:
+      path: /etc/systemd/system/tomcat.service
+      state: touch
+  - name: Edit tomcat.service
+    blockinfile:
+      dest: /etc/systemd/system/tomcat.service
+      insertafter:
+      block: |
+          [Unit]
+          Description = Apache Tomcat 7
+          After = syslog.target network.target
+          [Service]
+          User = tomcat
+          Group = tomcat
+          Type = oneshot
+          PIDFile =/usr/local/apache-tomcat-7.0.76/tomcat.pid
+          RemainAfterExit = yes
+          ExecStart =/usr/local/apache-tomcat-7.0.76/bin/startup.sh
+          ExecStop =/usr/local/apache-tomcat-7.0.76/bin/shutdown.sh
+          ExecReStart =/usr/local/apache-tomcat-7.0.76/bin/shutdown.sh;/usr/local/apache-tomcat-7.0.76/bin/startup.sh
+          [Install]
+          WantedBy = multi-user.target
+  - name: chmod 755 tomcat.service
+    file:
+      path: /etc/systemd/system/tomcat.service
+      mode: 0755
+  - name: Start Tomcat
+    systemd:
+      name: tomcat
+      state: started
+      enabled: yes
   - name: Install Docker
     yum:
       name: docker
