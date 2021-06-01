@@ -1,0 +1,34 @@
+---
+- hosts: TargetServer
+  vars:
+    user: "{{ user }}"
+    version: "{{ version }}"
+  become: yes
+  tasks:
+  - name: Install java
+    yum:
+      name: java-1.8.0-openjdk
+      state: present
+  - name: Install Maven
+    yum:
+      name: maven
+      state: present
+  - name: Install Tomcat
+    yum:
+      name: tomcat9
+      state: present
+  - name: Install Docker
+    yum:
+      name: docker
+      state: present
+#  - name: Start and Enable Docker Service
+#    service:
+#      name: docker
+#      state: started
+#      enabled: true
+  - name: Starting to Deploy Application
+    command: sudo docker run -itd -p 8081:8888 --name batch10 "{{ user }}"/batch10:"{{ version }}"
+  handlers:
+  - name: Running Upddates
+    yum:
+      update_cache: yes
