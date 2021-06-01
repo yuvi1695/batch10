@@ -34,7 +34,7 @@ try{
             
             stage ('Publish HTML Reports') {
                   echo " Publishing HTML Reports..."
-                  publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, includes: '*.xml', keepAll: false, reportDir: 'target/surefire-reports/', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+                  publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, includes: '*.xml', keepAll: false, reportDir: 'target/surefire-reports/', reportFiles: '*.xml', reportName: 'HTML Report', reportTitles: ''])
             }
 
             withCredentials([usernamePassword(credentialsId: 'dockerCreds', passwordVariable: 'dockerPwd', usernameVariable: 'dockerUser')]) {
