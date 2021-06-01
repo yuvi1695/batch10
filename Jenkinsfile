@@ -29,7 +29,7 @@ try{
                   def ws = pwd()
                   def artifact = findFiles(glob: '**/target/*.jar')
                   println ("Artifact to Scan :" + (artifact[0].path))
-                  //appscan application: 'b9e4f0c1-018b-497f-801e-7d9330303377', credentials: 'app-scan', name: 'Security-test', scanner: static_analyzer(hasOptions: false, target: "${ws}/${artifact[0].path}"), type: 'Static Analyzer', wait: true
+                  appscan application: 'b9e4f0c1-018b-497f-801e-7d9330303377', credentials: 'app-scan', name: 'Security-test', scanner: static_analyzer(hasOptions: false, target: "${ws}/${artifact[0].path}"), type: 'Static Analyzer', wait: true
             }
             
             stage ('Publish HTML Reports') {
