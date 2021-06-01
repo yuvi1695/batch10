@@ -91,7 +91,7 @@
     service:
       name: docker
       state: started
-      enabled: true
+      enabled: yes
   - name: Starting to Deploy Application
     command: sudo docker run -itd -p 8081:8888 --name batch10 "{{ user }}"/batch10:"{{ version }}"
   handlers:
