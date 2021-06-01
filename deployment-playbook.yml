@@ -51,19 +51,28 @@
       insertafter:
       block: |
           [Unit]
-          Description = Apache Tomcat 9
-          After = syslog.target network.target
+          Description=Apache Tomcat 9
+          After=network.target
+
           [Service]
-          User = tomcat
-          Group = tomcat
-          Type = oneshot
-          PIDFile =/opt/tomcat/apache-tomcat-9.0.46/tomcat.pid
-          RemainAfterExit = yes
-          ExecStart =/opt/tomcat/apache-tomcat-9.0.46/bin/startup.sh
-          ExecStop =/opt/tomcat/apache-tomcat-9.0.46/bin/shutdown.sh
-          ExecReStart =/opt/tomcat/apache-tomcat-9.0.46/bin/shutdown.sh;/usr/local/apache-tomcat-9.0.46/bin/startup.sh
+          Type=forking
+
+          Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
+          Environment=CATALINA_HOME=/opt/tomcat
+          Environment=CATALINA_BASE=/opt/tomcat
+          Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+          Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
+          ExecStart=/opt/tomcat/bin/startup.sh
+          ExecStop=/opt/tomcat/bin/shutdown.sh
+
+          User=tomcat
+          Group=tomcat
+          UMask=0007
+          RestartSec=10
+          Restart=always
+
           [Install]
-          WantedBy = multi-user.target
+          WantedBy=multi-user.target
   - name: chmod 755 tomcat.service
     file:
       path: /etc/systemd/system/tomcat.service
