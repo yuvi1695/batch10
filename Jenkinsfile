@@ -21,7 +21,7 @@ try{
 
                    echo "Running Static Code Analysis..."
                    withSonarQubeEnv('SONARQUBE') {
-                         sh "mvn sonar:sonar"
+                         //sh "mvn sonar:sonar"
                    }
               }
 
