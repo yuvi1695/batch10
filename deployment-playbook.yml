@@ -82,6 +82,7 @@
       name: tomcat
       state: started
       enabled: yes
+      daemon_reload: yes
   - name: Install Docker
     yum:
       name: docker
