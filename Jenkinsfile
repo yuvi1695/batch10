@@ -18,7 +18,6 @@ try{
               }
 
              stage ('Sonar Scan') {
-
                    echo "Running Static Code Analysis..."
                    withSonarQubeEnv('SONARQUBE') {
                          sh "mvn sonar:sonar"
