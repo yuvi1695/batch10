@@ -86,7 +86,7 @@
   - name: Install Docker
     yum:
       name: docker
-      state: present
+      state: installed
 #  - name: Start and Enable Docker Service
 #    service:
 #      name: docker
