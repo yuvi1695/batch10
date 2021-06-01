@@ -87,11 +87,11 @@
     yum:
       name: docker
       state: installed
-#  - name: Start and Enable Docker Service
-#    service:
-#      name: docker
-#      state: started
-#      enabled: true
+  - name: Start and Enable Docker Service
+    service:
+      name: docker
+      state: started
+      enabled: true
   - name: Starting to Deploy Application
     command: sudo docker run -itd -p 8081:8888 --name batch10 "{{ user }}"/batch10:"{{ version }}"
   handlers:
