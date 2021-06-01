@@ -4,7 +4,7 @@ try{
       node{
             def mvnHome = tool name: 'MAVEN3'
             def dockerHome = tool name: 'DOCKER'  
-            def version = 1.0
+            def version = 2.0
 
 
               stage ('Code Checkout') {
